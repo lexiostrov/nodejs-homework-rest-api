@@ -6,7 +6,11 @@ const validateBody = (schema) => {
     const empty = req._body;
 
     if (!empty) {
-      next(HttpError(400, "missing fields"));
+      if (req.method === "PUT") {
+        next(HttpError(400, "missing fields"));
+      } else if (req.method === "PATCH") {
+        next(HttpError(400, "missing field favorite"));
+      }
     }
     if (error) {
       next(HttpError(400, error.message));
